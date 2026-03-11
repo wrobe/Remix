@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { margin: 0; padding: 0; overflow: hidden; width: 100%; }
+    html, body { margin: 0; padding: 0; overflow-x: hidden; width: 100%; }
 
     .rs-section {
       font-family: 'DM Sans', sans-serif;
@@ -246,6 +246,22 @@ locations.forEach(loc => {
     </div>`;
   grid.appendChild(a);
 });
+</script>
+
+<script>
+  // Send height to parent iframe every time content might change
+  function sendHeight() {
+    const h = document.querySelector('.rs-section') 
+      ? document.querySelector('.rs-section').scrollHeight 
+      : document.body.scrollHeight;
+    window.parent.postMessage({ iframeHeight: h + 40 }, '*');
+  }
+  window.addEventListener('load', function() {
+    sendHeight();
+    setTimeout(sendHeight, 500);
+    setTimeout(sendHeight, 1500);
+  });
+  window.addEventListener('resize', sendHeight);
 </script>
 </body>
 </html>
